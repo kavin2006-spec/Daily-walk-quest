@@ -6,6 +6,7 @@ import "./App.css";
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const TODAY = new Date().toISOString().split("T")[0];
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 const CACHE_KEY = `dwq_quest_${TODAY}`;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -202,7 +203,7 @@ export default function App() {
     setError("");
     try {
       const res = await fetch(
-        `/api/geocode?address=${encodeURIComponent(address)}`
+        `${BACKEND_URL}/api/geocode?address=${encodeURIComponent(address)}`
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Geocoding failed");
@@ -232,7 +233,7 @@ export default function App() {
     );
 
     try {
-      const res = await fetch("/api/generate-destination", {
+      const res = await fetch(`${BACKEND_URL}/api/generate-destination`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
